@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Editors / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Power BI auto-recovery and cache files
+*.pbi/
+*.tmp
+
+# Local database files
+*.db
+*.sqlite
