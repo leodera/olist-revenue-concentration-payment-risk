@@ -28,13 +28,16 @@ The same analysis is built twice from the same two CSV files:
 
 ## Method
 - **Data:** Olist Brazilian E-Commerce dataset (Kaggle): customers, orders, order_items, order_payments, products, product_category.
-- **Revenue:** sum of item `price` (freight excluded), on delivered orders.
-- **SQL:** queries in `sql_queries/` build two summary tables, one per state and one per category. They are saved as `dashboard_state.csv` (27 states) and `dashboard_products.csv` (74 categories).
+- **Orders included:** all orders that have at least one item (98,666 orders), whatever their status (delivered, canceled, shipped and so on). Orders are **not** filtered to delivered only.
+- **Revenue:** sum of item `price`, freight excluded: **R$ 13,591,644**.
+- **Related project:** the [customer retention project](https://github.com/leodera/olist-revenue-retention) keeps delivered orders only (96,478 orders) and reports R$ 13,221,498. The R$ 370,146 gap is the 2,188 orders that were not delivered. Both projects add up item prices the same way, and only the set of orders differs.
+- **SQL:** two summary tables, one per state and one per category, saved as `dashboard_state.csv` (27 states) and `dashboard_products.csv` (74 categories).
 - **ABC tiers:** states and categories are ranked by revenue. A = the first ~80% of cumulative revenue (core), B = the next ~15% (mid), C = the last ~5% (tail).
 - **Promotion candidates:** core categories with at least 1,000 orders and at least 25% of orders on 6+ credit-card installments.
 - **Consistency check:** the state and category files both add up to R$ 13.59M.
 
 ## Limitations
+- Revenue includes orders that were later canceled or never delivered (about 2.7% of revenue), so the figures are slightly higher than realized revenue. Shares such as SP's 38.3% change very little either way.
 - Payment percentages can add to slightly more than 100%, because one order can use more than one payment type. Debit card is not shown.
 - "Uncategorized" (products with a missing category) is 1.3% of revenue.
 - Very small categories and states have few orders, so their percentages are unreliable. For example, `computers` has only 181 orders, so it is excluded from promotion candidates.
@@ -45,7 +48,7 @@ The same analysis is built twice from the same two CSV files:
 dash_project/
 ├── olist_dashboard.py          # Dash app
 ├── requirements.txt
-├── sql_queries/                # SQL that builds the two summary tables
+├── sql_queries/                # earlier versions of the queries (they filter to delivered orders; the dashboard CSVs were exported without that filter)
 ├── csv_files_from_queries/     # dashboard_state.csv, dashboard_products.csv
 └── dashboards/                 # Power BI screenshots
 ```
